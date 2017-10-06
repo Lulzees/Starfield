@@ -1,12 +1,14 @@
-NormalParticle[] gidgets;
+Particle[] gidgets;
 void setup()
 {
   size(600, 600);
-  gidgets = new NormalParticle[500];
+  gidgets = new Particle[500];
   for (int i = 0; i < gidgets.length; i++)
   {
     gidgets[i] = new NormalParticle();
   }
+  gidgets[0] = new OddballParticle();
+  gidgets[1] = new JumboParticle();
 }
 void draw()
 {
@@ -17,21 +19,17 @@ void draw()
     gidgets[i].move();
   }
 }
-class NormalParticle
+class NormalParticle implements Particle
 {
   double myX, myY, mySpeed, myAngle; 
-  int r, g, b;
   NormalParticle()
   {
     myX = (int)(Math.random()*100+250);
     myY = (int)(Math.random()*100+250);
     mySpeed = Math.random()*15+10;
     myAngle = Math.random()*2*PI;
-    /*r = (int)(Math.random()*255);
-    g = (int)(Math.random()*255);
-    b = (int)(Math.random()*255);*/
   }
-  void move()
+  public void move()
   {
     myX = myX + mySpeed * Math.cos(myAngle);
     myY = myY + mySpeed * Math.sin(myAngle);
@@ -43,28 +41,78 @@ class NormalParticle
       myAngle = Math.random()*2*PI;
     }
   }
-  void show()
+  public void show()
   {
     noStroke();
-    fill((int)(myX*0.425),(int)(myY*0.425), (int)((myX+myY)*0.2125));
-    ellipse((int)myX, (int)myY, 10, 10);
-    if (myX > 600 || myX < 0 || myY > 600 || myY < 0)
-    {
-      r = (int)(Math.random()*255);
-      g = (int)(Math.random()*255);
-      b = (int)(Math.random()*255);
-    }
+    fill((int)(myX*0.425+100), (int)(myY*0.425+100), (int)((myX+myY)*0.2125+100));
+    ellipse((int)myX, (int)myY, 5, 5);
   }
 }
 interface Particle
 {
-  //your code here
+  public void show();
+  public void move();
 }
-class OddballParticle //uses an interface
+class OddballParticle implements Particle
 {
-  //your code here
+  double myX, myY, mySpeed, myAngle; 
+  int o;
+  OddballParticle()
+  {
+    myX = (int)(Math.random()*100+250);
+    myY = (int)(Math.random()*100+250);
+    mySpeed = Math.random()*15+10;
+    myAngle = Math.random()*2*PI;
+    o = (int)(Math.random()*70+30);
+  }
+  public void show()
+  {
+    noStroke();
+    fill((int)(myY*0.425+100), (int)(myX*0.425+100), (int)((myX+myY)*0.2125+100), o);
+    ellipse((int)myX, (int)myY, 50, 50);
+    o = (int)(Math.random()*70+30);
+  }
+  public void move()
+  {
+    myX = myX + mySpeed * Math.cos(myAngle);
+    myY = myY + mySpeed * Math.sin(myAngle);
+    mySpeed = Math.random()*15+10;
+    myAngle = Math.random()*2*PI;
+    if (myX > 600 || myX < 0 || myY > 600 || myY < 0)
+    {
+      myX = myY = 300;
+    }
+  }
 }
-class JumboParticle //uses inheritance
+class JumboParticle implements Particle
 {
-  //your code here
+  double myX, myY, mySpeed, myAngle; 
+  int s;
+  JumboParticle()
+  {
+    myX = (int)(Math.random()*100+250);
+    myY = (int)(Math.random()*100+250);
+    mySpeed = Math.random()*15+10;
+    myAngle = Math.random()*2*PI;
+    s = (int)(Math.random()*50+50);
+  }
+  public void show()
+  {
+    noStroke();
+    fill((int)(myX*0.425+100), (int)(myY*0.425+100), (int)((myX+myY)*0.2125+100));
+    ellipse((int)myX, (int)myY, s, s);
+    s = (int)(Math.random()*100+20);
+  }
+  public void move()
+  {
+    myX = myX + mySpeed * Math.cos(myAngle);
+    myY = myY + mySpeed * Math.sin(myAngle);
+    if (myX > 600 || myX < 0 || myY > 600 || myY < 0)
+    {
+      myX = (int)(Math.random()*100+250);
+      myY = (int)(Math.random()*100+250);
+      mySpeed = Math.random()*15+10;
+      myAngle = Math.random()*2*PI;
+    }
+  }
 }
